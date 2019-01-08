@@ -17,3 +17,6 @@ cp -rfp inventory/sample inventory/ec2cluster
 # In ``/kubespray/inventory/ec2cluster/group_vars/all/all.yml`` uncomment 
 # ``cloud_provider`` option and set it to 'aws' and add default ssh connection
 # configuration - user and path to private key. 
+
+# To run ansible playbook
+ansible-playbook -i inventory/ec2cluster/hosts.ini --become --become-user=root cluster.yml
