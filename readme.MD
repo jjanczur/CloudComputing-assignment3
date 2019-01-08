@@ -1,0 +1,1 @@
+ec2cluster directory is an ansible inventory, which should be run from kubespray context

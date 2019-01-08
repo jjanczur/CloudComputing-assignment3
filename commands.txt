@@ -1,0 +1,19 @@
+# Install ansible 2.6
+pip install ansible==2.6
+
+# Clone Kubespray repository
+git clone https://github.com/kubernetes-sigs/kubespray.git
+
+# Checkout to v2.8.1 commit
+cd kubespray
+git checkout v2.8.1
+
+# Install dependencies from ``requirements.txt``
+sudo pip install -r requirements.txt
+
+# Copy ``inventory/sample`` as ``inventory/ec2cluster``
+cp -rfp inventory/sample inventory/ec2cluster
+
+# In ``/kubespray/inventory/ec2cluster/group_vars/all/all.yml`` uncomment 
+# ``cloud_provider`` option and set it to 'aws' and add default ssh connection
+# configuration - user and path to private key. 
