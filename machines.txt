@@ -1,4 +1,0 @@
-ec2-3-86-70-23.compute-1.amazonaws.com 3.86.70.23 172.31.35.235
-ec2-34-227-73-157.compute-1.amazonaws.com 34.227.73.157 172.31.36.245
-ec2-3-86-55-87.compute-1.amazonaws.com 3.86.55.87 172.31.45.116
-
