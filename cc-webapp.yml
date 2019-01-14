@@ -1,0 +1,146 @@
+---
+- hosts: all
+  vars:
+    ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+  tasks:
+    - name: Install openshift
+      pip:
+        name: openshift>=0.6
+
+- hosts: node1
+  tasks:
+    - name: Create a Kubernetes namespace
+      k8s:
+        name: assignment-3
+        api_version: v1
+        kind: Namespace
+        state: present
+        
+    - name: Create a backend deployment 
+      k8s:
+        definition:
+            api_version: v1
+            kind: Deployment
+            metadata:
+                name: backend
+                namespace: assignment-3
+                labels:
+                    app: backend
+            spec:
+                replicas: 3
+                selector:
+                    matchLabels:
+                        app: backend
+                template:
+                    metadata:
+                        name: backend
+                        labels:
+                            app: backend
+                    spec:
+                        containers:
+                        - name: backend-container
+                          image: lolash/cloud-computing-29:backend-v0.0.1
+                          ports:
+                          - containerPort: 80
+                livenessProbe:
+                    httpGet: /ready
+                    port: 80
+                    httpHeaders:
+                    - name: CC-Ready
+                      value: Backend
+                    initialDelaySeconds: 3
+                    periodSeconds: 3
+                readinessProbe:
+                    httpGet: /ready
+                    port: 80
+                    httpHeaders:
+                    - name: CC-Ready
+                      value: Backend
+                    initialDelaySeconds: 3
+                    periodSeconds: 3
+  
+    - name: Create a backend service object
+      k8s:
+        state: present
+        definition:
+            api_version: v1
+            kind: Service
+            metadata:
+                name: cc-backend-service
+                namespace: assignment-3
+                labels:
+                    service: backend
+            spec:
+                type: ClusterIP
+                ports:
+                - port: 80
+                  protocol: TCP
+                selector:
+                    app: backend
+
+    - name: Create a frontend deployment 
+      k8s:
+        definition:
+           
+            api_version: v1
+            kind: Deployment
+            metadata:
+                name: frontend
+                namespace: assignment-3
+                labels:
+                    app: frontend
+            spec:
+                selector:
+                    matchLabels:
+                        app: frontend
+                replicas: 3
+                template:
+                    metadata:
+                        name: frontend
+                        labels:
+                            app: frontend
+                    spec:
+                        containers:
+                        - name: frontend-container
+                          image: lolash/cloud-computing-29:frontend-v0.0.1
+                          ports:
+                          - containerPort: 80
+                livenessProbe:
+                    httpGet: /ready
+                    port: 80
+                    httpHeaders:
+                    - name: CC-Ready
+                      value: Frontend
+                    initialDelaySeconds: 3
+                    periodSeconds: 3
+                readinessProbe:
+                    httpGet: /ready
+                    port: 80
+                    httpHeaders:
+                    - name: CC-Ready
+                      value: Frontend
+                    initialDelaySeconds: 3
+                    periodSeconds: 3
+                
+  
+    - name: Create a frontend service object
+      k8s:
+        state: present
+        definition:
+            api_version: v1
+            kind: Service
+            metadata:
+                name: cc-frontend-service
+                namespace: assignment-3
+                labels:
+                    service: frontend
+            spec:
+                type: NodePort
+                ports:
+                - port: 80
+                  protocol: TCP
+                selector:
+                    app: frontend
+        
+            
+    

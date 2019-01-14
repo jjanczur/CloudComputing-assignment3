@@ -32,3 +32,6 @@ docker tag [local_image_tag] [docker_hub_repository_name]:[docker_hub_image_tag]
 # To push the image to the docker hub using the same values as for tagging
 docker push [docker_hub_repository_name]:[docker_hub_image_tag]
 
+# To run ansible playbook which deploys the application
+ansible-playbook -i hosts.ini --become --become-user=root cc-webapp.yml
+
