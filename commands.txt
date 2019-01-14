@@ -22,3 +22,13 @@ sudo su
 
 # To check if cluster is running
 root@node1:/home/ubuntu# kubectl cluster-info
+
+# To build image from Dockerfile
+docker build -f "frontend.Dockerfile" -t "frontend" .
+
+# To tag the image before pushing it to the docker hub
+docker tag [local_image_tag] [docker_hub_repository_name]:[docker_hub_image_tag]
+
+# To push the image to the docker hub using the same values as for tagging
+docker push [docker_hub_repository_name]:[docker_hub_image_tag]
+
