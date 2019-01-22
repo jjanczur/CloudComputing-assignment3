@@ -1,5 +1,9 @@
 # Install ansible 2.6
-pip install ansible==2.6
+sudo pip install ansible==2.6
+
+# install python-netaddr
+sudo apt install python-netaddr
+
 
 # Clone Kubespray repository
 git clone https://github.com/kubernetes-sigs/kubespray.git
@@ -14,14 +18,20 @@ sudo pip install -r requirements.txt
 # Copy ``inventory/sample`` as ``inventory/ec2cluster``
 cp -rfp inventory/sample inventory/ec2cluster
 
+# remove sample hosts.ini
+rm inventory/ec2cluster/hosts.ini
+
+# copy our hosts.ini
+cp ../hosts.ini inventory/ec2cluster/hosts.ini
+
 # To run ansible playbook
 ansible-playbook -i inventory/ec2cluster/hosts.ini --become --become-user=root cluster.yml
 
 # To become root on the VM
-sudo su
+sudo su -
 
-# To check if cluster is running
-root@node1:/home/ubuntu# kubectl cluster-info
+# To check if all nodes are up and part of the cluster
+root@node1:/home/ubuntu# kubectl get nodes
 
 # To build image from Dockerfile
 docker build -f "frontend.Dockerfile" -t "frontend" .
