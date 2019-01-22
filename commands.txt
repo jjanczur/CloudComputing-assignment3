@@ -45,3 +45,9 @@ docker push [docker_hub_repository_name]:[docker_hub_image_tag]
 # To run ansible playbook which deploys the application
 ansible-playbook -i hosts.ini --become --become-user=root cc-webapp.yml
 
+# To determine the node port
+kubectl get svc -n assignment-3
+
+# To scale the deployments
+kubectl -n assignment-3 scale deployments/backend --replicas=6
+kubectl -n assignment-3 scale deployments/frontend --replicas=4
