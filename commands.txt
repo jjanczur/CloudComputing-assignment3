@@ -51,3 +51,6 @@ kubectl get svc -n assignment-3
 # To scale the deployments
 kubectl -n assignment-3 scale deployments/backend --replicas=6
 kubectl -n assignment-3 scale deployments/frontend --replicas=4
+
+# To start the test script
+python3 test-deployment.py 3.87.56.100:30711 3.88.34.232:30711 3.85.91.153:30711
